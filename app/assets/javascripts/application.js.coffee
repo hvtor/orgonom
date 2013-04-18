@@ -15,7 +15,7 @@
 #= require jquery.hammer.min
 #= require_tree .
 
-gridSize = 100
+gridSize = 50
 threshold = gridSize / 2
 
 flattenCoords = (coords) ->
@@ -39,20 +39,26 @@ $ ->
     console.log("END DRAGGING!")
   )
 
-  $touchArea.hammer().on("drag", (e) ->
+  $touchArea.hammer().on "drag", (e) ->
     coords = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
     flattenCoords(coords)
-    
-    drawShape = () ->
-      canvas = document.getElementById('mycanvas')
-      ctx = canvas.getContext('2d')
-
-      ctx.beginpath()
-      ctx.moveTo coords.x, coords.y
-      ctx.lineTo coords.x+offsetX, coords.y+offsetY
-      ctx.lineTo()
-    
     console.log(e)
     console.log(e.gesture.angle + " degrees , " + e.gesture.distance + " px")
     console.log("x: "+ coords.x + "  y: "+coords.y)
-  )
+    
+  drawLine = () ->
+    ctx = document.getElementById('.canvas').canvas.getContext('2d')
+
+    if ctx
+      ctx.beginpath()
+      ctx.moveTo coords.x, coords.y
+      ctx.lineTo coords.x+offSetX, coords.y+offSetY
+      ctx.strokeLine()
+
+  drawLine()
+  
+
+      
+
+    
+  
