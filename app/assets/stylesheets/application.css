@@ -14,10 +14,10 @@
 
 .touch_area
 {
-  height: 400px;
-  background-color: #DDD;
   
-  margin: 10px;
+  background-color: #DDD;
+  height: 400px;
+  margin: 100px;
   padding: 20px;
   border-radius:5px;
 }

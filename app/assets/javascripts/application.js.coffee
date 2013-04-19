@@ -11,17 +11,18 @@
 # GO AFTER THE REQUIRES BELOW.
 #
 #= require jquery
-#= require jquery_ujs
 #= require jquery.hammer.min
 #= require_tree .
 
 gridSize = 50
 threshold = gridSize / 2
 
+
 flattenCoords = (coords) ->
   offsetX = coords.x % gridSize
   offsetY = coords.y % gridSize
-
+  console.log("OffSet:"+offsetX)
+  console.log("Offset: "+offsetY)
   coords.x -= offsetX
   coords.y -= offsetY
 
@@ -39,26 +40,18 @@ $ ->
     console.log("END DRAGGING!")
   )
 
-  $touchArea.hammer().on "drag", (e) ->
+  $touchArea.hammer().on("drag", (e) ->
     coords = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
     flattenCoords(coords)
     console.log(e)
-    console.log(e.gesture.angle + " degrees , " + e.gesture.distance + " px")
+    console.log(e.gesture.angle + " degrees")
     console.log("x: "+ coords.x + "  y: "+coords.y)
-    
-  drawLine = () ->
-    ctx = document.getElementById('.canvas').canvas.getContext('2d')
+    if sine(coords.y/coords.x) = pi/2 then # if sine of the angle is  = 45 deg, draw the line
 
-    if ctx
-      ctx.beginpath()
-      ctx.moveTo coords.x, coords.y
-      ctx.lineTo coords.x+offSetX, coords.y+offSetY
-      ctx.strokeLine()
+    drawTwoUnitLineAlongGrid = (angle) ->
 
-  drawLine()
-  
 
       
+      if angle 
+  )
 
-    
-  
