@@ -32,8 +32,13 @@ flattenCoords = (coords) ->
 $ ->
   $touchArea = $(".touch_area")
 
+startCoords = (dragStartCoords) ->
   $touchArea.hammer().on("dragstart", (e) ->
     console.log("STARTED DRAGGING!")
+<<<<<<< master
+=======
+    dragStartCoords = {x:e.gesture.center.pageX, y:e.gesture.center.pageY}
+>>>>>>> local
   )
 
   $touchArea.hammer().on("dragend", (e) ->
@@ -52,7 +57,13 @@ $ ->
   #   drawTwoUnitLineAlongGrid = (angle) ->
 
 
+<<<<<<< master
       
   #     if angle 
   # )
 
+=======
+  #   drawAUnitLineAlongGrid = (angle) ->
+    if Math.sin(angle) == Math.sqrt(2)/2
+      drawLine = (dragStartCoords.x,dragStartCoords.y,coords.x,coords.y) ->
+>>>>>>> local
