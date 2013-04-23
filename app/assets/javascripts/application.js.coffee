@@ -46,12 +46,13 @@ $ ->
     console.log(e)
     console.log(e.gesture.angle + " degrees")
     console.log("x: "+ coords.x + "  y: "+coords.y)
-    if sine(coords.y/coords.x) = pi/2 then # if sine of the angle is  = 45 deg, draw the line
+  )
+  #   if sine(coords.y/coords.x) = pi/2 then # if sine of the angle is  = 45 deg, draw the line
 
-    drawTwoUnitLineAlongGrid = (angle) ->
+  #   drawTwoUnitLineAlongGrid = (angle) ->
 
 
       
-      if angle 
-  )
+  #     if angle 
+  # )
 
