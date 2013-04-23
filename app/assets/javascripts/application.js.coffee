@@ -35,10 +35,7 @@ $ ->
 startCoords = (dragStartCoords) ->
   $touchArea.hammer().on("dragstart", (e) ->
     console.log("STARTED DRAGGING!")
-<<<<<<< master
-=======
     dragStartCoords = {x:e.gesture.center.pageX, y:e.gesture.center.pageY}
->>>>>>> local
   )
 
   $touchArea.hammer().on("dragend", (e) ->
@@ -52,18 +49,7 @@ startCoords = (dragStartCoords) ->
     console.log(e.gesture.angle + " degrees")
     console.log("x: "+ coords.x + "  y: "+coords.y)
   )
-  #   if sine(coords.y/coords.x) = pi/2 then # if sine of the angle is  = 45 deg, draw the line
-
-  #   drawTwoUnitLineAlongGrid = (angle) ->
-
-
-<<<<<<< master
-      
-  #     if angle 
-  # )
-
-=======
-  #   drawAUnitLineAlongGrid = (angle) ->
-    if Math.sin(angle) == Math.sqrt(2)/2
+  
+drawAUnitLineBetweenPoints = (angle) ->
+    if Math.sin(angle) == Math.sqrt(2)/2 #   if sine(coords.y/coords.x) = pi/2 then # if sine of the angle is  = 45 deg, draw the line
       drawLine = (dragStartCoords.x,dragStartCoords.y,coords.x,coords.y) ->
->>>>>>> local
