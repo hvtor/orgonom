@@ -19,6 +19,12 @@ threshold = gridSize / 2
 
 startCoords = (dragStartCoords) ->
   dragStartCoords = {x:e.gesture.center.pageX, y:e.gesture.center.pageY}
+  startOffSetX = dragStartCoords.x % gridSize
+  startOffSetY = dragStartCoords.y % gridSize
+  startCoords.x -= startOffSetX
+  startCoords.y -= startOffSetY
+  startCoords.x += gridSize if startOffSetX > threshold
+  startCoords.y += gridSize if startOffSetY > threshold
 
 flattenCoords = (coords) ->
   offsetX = coords.x % gridSize
@@ -36,7 +42,7 @@ drawAUnitLineBetweenPoints = (angle) ->
 $ ->
   $touchArea = $(".touch_area")
 
-  $touchArea.hammer().on("dragstart", (e) ->
+  $touchArea.hammer().on("dragstart", startCoords(dragStartCoords) ->
     console.log("STARTED DRAGGING!")    
   )
 
