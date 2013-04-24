@@ -29,15 +29,22 @@ startCoords = (dragStartCoords) ->
 flattenCoords = (coords) ->
   offsetX = coords.x % gridSize
   offsetY = coords.y % gridSize
-  console.log("OffSet:"+offsetX)
+  console.log("OffSet: "+offsetX)
   console.log("Offset: "+offsetY)
   coords.x -= offsetX
   coords.y -= offsetY
   coords.x += gridSize if offsetX > threshold
   coords.y += gridSize if offsetY > threshold
 
-drawAUnitLineBetweenPoints = (angle) ->
-  if Math.sin(angle) == Math.sqrt(2)/2 #   if sine(coords.y/coords.x) = pi/2 then # if sine of the angle is  = 45 deg, draw the line
+drawAUnitLineBetweenPoints = (dragStartCoords, coords) ->
+  if Math.sin(angle) == Math.sqrt(2)/2 #if sine(coords.y/coords.x) = pi/2 then # if sine of the angle is  = 45 deg, draw the line
+    # get context from canvas (2d)
+    # set variable ctx as context
+    # begin line draw from dragStartCoords
+    # reset dragStartCoords to coords (while e != dragEnd)
+    # refactor later to save dragStartCoords and coords as an object to a lines hash
+    # (move) line draw to coords 
+    # 
 
 $ ->
   $touchArea = $(".touch_area")
