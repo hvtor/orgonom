@@ -37,28 +37,28 @@ flattenCoords = (coords) ->
   coords.y += gridSize if offsetY > threshold
 
 drawAUnitLineBetweenPoints = (dragStartCoords, coords) ->
-  if Math.sin(angle) == Math.sqrt(2)/2 #if sine(coords.y/coords.x) = pi/2 then # if sine of the angle is  = 45 deg, draw the line
+  if Math.sin(angle) == gridSize*Math.sqrt(2) #if sine(coords.y/coords.x) = pi/2 then # if sine of the angle is  = 45 deg, draw the line
     # get context from canvas (2d)
     # set variable ctx as context
     # begin line draw from dragStartCoords
-    # set dragStartCoords to coords, and reset dragStartCoords (while $touchArea.hammer().on("dragend") != dragend)
+    # set dragStartCoords to coords, and reset dragStartCoords (while $touchArea.hammer().on("dragend")? false)
     # refactor later to save dragStartCoords and coords as an object to a lines hash
     # (move) line draw to coords 
-    # 
 
 $ ->
   $touchArea = $(".touch_area")
 
-  $touchArea.hammer().on("dragstart", startCoords(dragStartCoords) ->
+  $touchArea.hammer().on("dragstart", startCoords(e) ->
+    startCoords = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
     console.log("STARTED DRAGGING!")    
   )
 
-  $touchArea.hammer().on("drag", (e) ->
+  $touchArea.hammer().on("drag", coords(e) ->
     coords = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
     flattenCoords(coords)
     console.log(e)
     console.log(e.gesture.angle + " degrees")
-    console.log("x: "+ coords.x + "  y: "+coords.y)
+    console.log("x: "+ coords.x + " y: "+coords.y)
   )
 
   $touchArea.hammer().on("dragend", (e) ->
