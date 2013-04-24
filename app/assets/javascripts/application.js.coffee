@@ -41,7 +41,7 @@ drawAUnitLineBetweenPoints = (dragStartCoords, coords) ->
     # get context from canvas (2d)
     # set variable ctx as context
     # begin line draw from dragStartCoords
-    # reset dragStartCoords to coords (while e != dragEnd)
+    # set dragStartCoords to coords, and reset dragStartCoords (while $touchArea.hammer().on("dragend") != dragend)
     # refactor later to save dragStartCoords and coords as an object to a lines hash
     # (move) line draw to coords 
     # 
