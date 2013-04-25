@@ -14,52 +14,61 @@
 #= require jquery.hammer.min
 #= require_tree .
 
-gridSize = 50
+gridSize = 10 
 threshold = gridSize / 2
 
-startCoords = (dragStartCoords) ->
+startCoords = (e) ->
   dragStartCoords = {x:e.gesture.center.pageX, y:e.gesture.center.pageY}
-  startOffSetX = dragStartCoords.x % gridSize
-  startOffSetY = dragStartCoords.y % gridSize
-  startCoords.x -= startOffSetX
-  startCoords.y -= startOffSetY
-  startCoords.x += gridSize if startOffSetX > threshold
-  startCoords.y += gridSize if startOffSetY > threshold
+  # startOffSetX = dragStartCoords.x % gridSize
+  # startOffSetY = dragStartCoords.y % gridSize
+  # startCoords.x -= startOffSetX
+  # startCoords.y -= startOffSetY
+  # startCoords.x += gridSize if startOffSetX > threshold
+  # startCoords.y += gridSize if startOffSetY > threshold
   return dragStartCoords
 
-endCoords = (dragEndCoords) ->
+endCoords = (e) ->
   dragEndCoords = {x:e.gesture.center.pageX, y:e.gesture.center.pageY}
-  endOffSetX = dragEndCoords.x % gridSize
-  endOffSetY = dragEndCoords.y % gridSize
-  endCoords.x -= endOffSetX
-  endCoords.y -= endOffSetY
-  endCoords.x += gridSize if endOffSetX > threshold
-  endCoords.y += gridSize if endOffSetY > threshold
+  # endOffSetX = dragEndCoords.x % gridSize
+  # endOffSetY = dragEndCoords.y % gridSize
+  # endCoords.x -= endOffSetX
+  # endCoords.y -= endOffSetY
+  # endCoords.x += gridSize if endOffSetX > threshold
+  # endCoords.y += gridSize if endOffSetY > threshold
   return dragEndCoords
 
 flattenCoords = (coords) ->
-  offsetX = coords.x % gridSize
-  offsetY = coords.y % gridSize
-  console.log("OffSet: "+offsetX)
-  console.log("Offset: "+offsetY)
-  coords.x -= offsetX
-  coords.y -= offsetY
-  coords.x += gridSize if offsetX > threshold
-  coords.y += gridSize if offsetY > threshold
+  # offsetX = coords.x % gridSize
+  # offsetY = coords.y % gridSize
+  # coords.x -= offsetX
+  # coords.y -= offsetY
+  # coords.x += gridSize if offsetX > threshold
+  # coords.y += gridSize if offsetY > threshold
   return coords
 
-drawAUnitLineBetweenPoints = (dragStartCoords, dragEndcoords) ->
-  if Math.sin(angle) == gridSize*Math.sqrt(2) #if sine(coords.y/coords.x) = pi/2 then # if sine of the angle is  = 45 deg, draw the line
+drawAUnitLineBetweenPoints = (dragStartCoords, dragEndCoords) ->
+  if true or Math.sin(angle) == gridSize*Math.sqrt(2) #if sine(coords.y/coords.x) = pi/2 then # if sine of the angle is  = 45 deg, draw the line
+    console.log("drawing!")
     # get context from canvas (2d)
     canvas = document.getElementById('myCanvas')
     # set variable ctx as context
     context = canvas.getContext('2d')
     # begin line draw from dragStartCoords
+    context.save()
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    context.restore()
     context.beginPath()
     context.moveTo(dragStartCoords.x, dragStartCoords.y)
-    context.moveTo(dragEndCoords.x, dragEndCoords.y)
+    context.lineTo(dragEndCoords.x, dragEndCoords.y)
+
+    context.strokeStyle = "#df4b26"
+    context.lineWidth = 1 
     context.lineJoin = 'round'
+    context.webkitImageSmoothingEnabled = true;
     context.stroke()
+    context.save()
+
+  
 
 # set dragStartCoords to coords, and reset dragStartCoords (within $touchArea.hammer().on("dragend")? false)
 # resetPointDataForNewLine = (dragStartCoords, coords) ->
@@ -72,23 +81,31 @@ drawAUnitLineBetweenPoints = (dragStartCoords, dragEndcoords) ->
     # (move) line draw to coords 
 
 $ ->
-  $touchArea = $(".touch_area")
-
-  $touchArea.hammer().on("dragstart", (e) ->
-    startCoords(e) = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
-    console.log("STARTED DRAGGING!")    
-    drawAUnitLineBetweenPoints(startCoords)
-  )
-
-  $touchArea.hammer().on("drag", (e) ->
+  orgoNom = new OrgoNom($("#myCanvas"))
+  
+class OrgoNom
+  constructor: (@$canvas) ->
+    @start = {x:0, y:0}
+    # TODO: we need to bind to dragstart, drag, dragend
+    @$canvas.hammer()
+      .on( "dragstart", @onDragStart )
+      .on( "drag", @onDrag )
+      .on( "dragend", @onDragEnd )
+  onDragStart: (e) => 
+    @start = startCoords(e)
+  onDrag: (e) =>
     coords = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
-    flattenCoords(coords)
-    console.log(e)
-    console.log(e.gesture.angle + " degrees")
-    console.log("x: "+ coords.x + " y: "+coords.y)
-  )
+    @end = flattenCoords(coords)
+    @render()
 
-  $touchArea.hammer().on("dragend", (e) ->
-    endCoords(e) = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
-    console.log("END DRAGGING!")
-  )
+  onDragEnd: (e) =>
+    @end = endCoords(e)
+    @render()
+  render: ->
+    console.log(@start, @end)
+    drawAUnitLineBetweenPoints(@start, @end)
+
+
+
+
+
