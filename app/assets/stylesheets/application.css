@@ -19,11 +19,12 @@
   width: 318px;
   border: 3px solid #fafafa;
   margin: 0 0 5px 1px;
+  padding-top: 10px;
   border-radius:5px;
   font-color: #323858;
   font-size:20px;
   font-family: 'Special Elite', cursive;
-  text-align: middle;
+  text-align: center;
   word-spacing: -1px;
 
 }
@@ -32,7 +33,7 @@
   height: 400px;
   width: 320px;
   
-  border: 3px solid #fafafa;
+  border: 3px dashed #fafafa;
   border-radius:5px;
 }
 

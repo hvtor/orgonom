@@ -25,6 +25,17 @@ startCoords = (dragStartCoords) ->
   startCoords.y -= startOffSetY
   startCoords.x += gridSize if startOffSetX > threshold
   startCoords.y += gridSize if startOffSetY > threshold
+  return dragStartCoords
+
+endCoords = (dragEndCoords) ->
+  dragEndCoords = {x:e.gesture.center.pageX, y:e.gesture.center.pageY}
+  endOffSetX = dragEndCoords.x % gridSize
+  endOffSetY = dragEndCoords.y % gridSize
+  endCoords.x -= endOffSetX
+  endCoords.y -= endOffSetY
+  endCoords.x += gridSize if endOffSetX > threshold
+  endCoords.y += gridSize if endOffSetY > threshold
+  return dragEndCoords
 
 flattenCoords = (coords) ->
   offsetX = coords.x % gridSize
@@ -35,8 +46,9 @@ flattenCoords = (coords) ->
   coords.y -= offsetY
   coords.x += gridSize if offsetX > threshold
   coords.y += gridSize if offsetY > threshold
+  return coords
 
-drawAUnitLineBetweenPoints = (dragStartCoords, coords) ->
+drawAUnitLineBetweenPoints = (dragStartCoords, dragEndcoords) ->
   if Math.sin(angle) == gridSize*Math.sqrt(2) #if sine(coords.y/coords.x) = pi/2 then # if sine of the angle is  = 45 deg, draw the line
     # get context from canvas (2d)
     canvas = document.getElementById('myCanvas')
@@ -45,28 +57,30 @@ drawAUnitLineBetweenPoints = (dragStartCoords, coords) ->
     # begin line draw from dragStartCoords
     context.beginPath()
     context.moveTo(dragStartCoords.x, dragStartCoords.y)
-    context.moveTo(coords.x, coords.y)
-
+    context.moveTo(dragEndCoords.x, dragEndCoords.y)
     context.lineJoin = 'round'
     context.stroke()
-    
-# resetPointDataForNewLine = (dragStartCoords, coords) ->
-#   dragStartCoords = 
 
-    
-    # set dragStartCoords to coords, and reset dragStartCoords (while $touchArea.hammer().on("dragend")? false)
+# set dragStartCoords to coords, and reset dragStartCoords (within $touchArea.hammer().on("dragend")? false)
+# resetPointDataForNewLine = (dragStartCoords, coords) ->
+#   newPoint = coords
+#   dragStartCoords = coords
+#   coords = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
+  
+
     # refactor later to save dragStartCoords and coords as an object to a lines hash
     # (move) line draw to coords 
 
 $ ->
   $touchArea = $(".touch_area")
 
-  $touchArea.hammer().on("dragstart", startCoords() ->
-    startCoords = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
+  $touchArea.hammer().on("dragstart", (e) ->
+    startCoords(e) = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
     console.log("STARTED DRAGGING!")    
+    drawAUnitLineBetweenPoints(startCoords)
   )
 
-  $touchArea.hammer().on("drag", coords(e) ->
+  $touchArea.hammer().on("drag", (e) ->
     coords = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
     flattenCoords(coords)
     console.log(e)
@@ -74,7 +88,7 @@ $ ->
     console.log("x: "+ coords.x + " y: "+coords.y)
   )
 
-  $touchArea.hammer().on("dragend", coords(e) ->
-    coords = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
+  $touchArea.hammer().on("dragend", (e) ->
+    endCoords(e) = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
     console.log("END DRAGGING!")
   )
