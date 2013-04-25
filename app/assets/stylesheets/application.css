@@ -12,12 +12,30 @@
  *= require_tree .
  */
 
-.touch_area
-{
-  
-  background-color: #DDD;
-  height: 400px;
-  margin: 100px;
-  padding: 20px;
+
+.question{
+  background-color: #dafafa;
+  height: 75px;
+  width: 318px;
+  border: 3px solid #fafafa;
+  margin: 0 0 5px 1px;
   border-radius:5px;
+  font-color: #323858;
+  font-size:20px;
+  font-family: 'Special Elite', cursive;
+  text-align: middle;
+  word-spacing: -1px;
+
+}
+#myCanvas{
+  background-color: #b9efc6;
+  height: 400px;
+  width: 320px;
+  
+  border: 3px solid #fafafa;
+  border-radius:5px;
+}
+
+body{
+background-color:#7fc7a0;
 }
