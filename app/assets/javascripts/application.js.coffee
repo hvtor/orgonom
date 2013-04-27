@@ -81,6 +81,22 @@ drawAUnitLineBetweenPoints = (dragStartCoords, dragEndCoords) ->
 
     context.save()
     
+drawLines = (ctx, linesArray) ->
+  canvas = document.getElementById('myCanvas')
+  ctx.clearRect(0,0, canvas.width, canvas.height)
+
+  for line in linesArray
+    ctx.beginPath()
+
+    ctx.moveTo(line.start.x, line.start.y)
+    ctx.lineTo(line.end.x, line.end.y)
+  
+    ctx.strokeStyle = "#df4b26"
+    ctx.lineWidth = 10
+    ctx.lineCap = 'round'
+    ctx.webkitImageSmoothingEnabled = true;
+    ctx.stroke()
+
 
   
 
@@ -100,23 +116,29 @@ $ ->
 class OrgoNom
   constructor: (@$canvas) ->
     @start = {x:0, y:0}
+    @lines = []
     # TODO: we need to bind to dragstart, drag, dragend
     @$canvas.hammer()
-      .on( "dragstart", @onDragStart )
-      .on( "drag", @onDrag )
-      .on( "dragend", @onDragEnd )
+      .on( "touch", @onDragStart )
+      .on( "swipe", @onDrag )
+      .on( "release", @onDragEnd )
+    @ctx = @$canvas[0].getContext('2d')
   onDragStart: (e) => 
-    @start = startCoords(e)
+    @start = flattenCoords(startCoords(e))
+    @lines.push {start: @start, end: @start}
   onDrag: (e) =>
     coords = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
     console.log("ANGLE: " + e.gesture.angle)
-    @end = flattenCoords(coords)
+    @end = flattenCoords coords
+    line = @lines.pop()
+    line.end = @end
+    @lines.push line
     @render()
   onDragEnd: (e) =>
-    @end = endCoords(e)
+    @start = {x: 0, y: 0}
     @render()
   render: ->
-    drawAUnitLineBetweenPoints(@start, @end)
+    drawLines(@ctx, @lines)
     console.log(@start, @end)
 
 
