@@ -81,7 +81,21 @@ drawAUnitLineBetweenPoints = (dragStartCoords, dragEndCoords) ->
 
     context.save()
     
+drawLines = (ctx, linesArray) ->
+  canvas = document.getElementByID('myCanvas')
+  ctx.clearRect(0,0, canvas.width, canvas.height)
 
+  for line in linesArray
+    ctx.beginPath()
+
+    ctx.moveTo(line.start.x, line.start.y)
+    ctx.lineTo(line.end.x, line.end.y)
+
+    ctx.strokeStyle = "#fff"
+    ctx.lineWidth = 5
+    ctx.lineCap = 'round'
+    ctx.webkitImageSmoothingEnabled = true;
+    ctx.stroke()
   
 
 # set dragStartCoords to coords, and reset dragStartCoords (within $touchArea.hammer().on("dragend")? false)
@@ -102,14 +116,17 @@ class OrgoNom
     @start = {x:0, y:0}
     # TODO: we need to bind to dragstart, drag, dragend
     @$canvas.hammer()
-      .on( "dragstart", @onDragStart )
-      .on( "drag", @onDrag )
-      .on( "dragend", @onDragEnd )
+      # .on( "dragstart", @onDragStart )
+      # .on( "drag", @onDrag )
+      # .on( "dragend", @onDragEnd )
+      .on( "touch", @onDragStart )
+      .on( "swipe", @onDrag )
+      .on( "release", @onDragEnd )
   onDragStart: (e) => 
     @start = startCoords(e)
   onDrag: (e) =>
     coords = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
-    console.log("ANGLE: " + e.gesture.angle)
+
     @end = flattenCoords(coords)
     @render()
   onDragEnd: (e) =>
