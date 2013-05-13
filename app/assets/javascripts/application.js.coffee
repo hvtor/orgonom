@@ -56,7 +56,7 @@ flattenCoords = (coords) ->
   return coords
 
 drawAUnitLineBetweenPoints = (dragStartCoords, dragEndCoords) ->
-  # if Math.sin(angle) == gridSize*Math.sqrt(2) #if sine(coords.y/coords.x) = pi/2 then # if sine of the angle is  = 45 deg, draw the line
+  
     # get context from canvas (2d)
     canvas = document.getElementById('myCanvas')
     # set variable ctx as context
@@ -97,37 +97,27 @@ drawLines = (ctx, linesArray) ->
     ctx.webkitImageSmoothingEnabled = true;
     ctx.stroke()
   
-
-# set dragStartCoords to coords, and reset dragStartCoords (within $touchArea.hammer().on("dragend")? false)
-# resetPointDataForNewLine = (dragStartCoords, coords) ->
-#   newPoint = coords
-#   dragStartCoords = coords
-#   coords = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
-  
-
-    # refactor later to save dragStartCoords and coords as an object to a lines hash
-    # (move) line draw to coords 
-
 $ ->
   orgoNom = new OrgoNom($("#myCanvas"))
   
 class OrgoNom
   constructor: (@$canvas) ->
     @start = {x:0, y:0}
-    # TODO: we need to bind to dragstart, drag, dragend
-    @$canvas.hammer()
-      # .on( "dragstart", @onDragStart )
-      # .on( "drag", @onDrag )
-      # .on( "dragend", @onDragEnd )
-      .on( "touch", @onDragStart )
-      .on( "swipe", @onDrag )
-      .on( "release", @onDragEnd )
+     @$canvas.hammer()
+      .on( "dragstart", @onDragStart )
+      .on( "drag", @onDrag )
+      .on( "dragend", @onDragEnd )
+    @ctx = @$canvas[0].getContext('2d')
   onDragStart: (e) => 
     @start = startCoords(e)
+    @lines.push {start: @start, end: @start}
   onDrag: (e) =>
     coords = { x: e.gesture.center.pageX, y: e.gesture.center.pageY}
-
     @end = flattenCoords(coords)
+    //Adding last 
+    line = @lines.pop()
+    line.end = @end
+    lies.push line 
     @render()
   onDragEnd: (e) =>
     @end = endCoords(e)
